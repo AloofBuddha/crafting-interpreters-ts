@@ -1,22 +1,9 @@
 #!/usr/bin/env node
 "use strict";
-function run() {
-    var args = process.argv.slice(2);
-    if (args.length > 1) {
-        console.log('Usage: tlox [script]');
-    }
-    else if (args.length === 1) {
-        runFile(args[0]);
-    }
-    else {
-        runPrompt();
-    }
-}
-function runFile(path) {
-    console.log('runFile:', path);
-}
-function runPrompt() {
-    console.log('runPrompt');
-}
-run();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Lox_1 = __importDefault(require("./Lox"));
+Lox_1.default.main();
 //# sourceMappingURL=index.js.map
