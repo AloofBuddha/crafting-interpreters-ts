@@ -1,15 +1,17 @@
 {
-  "name": "cri-lox-ts",
-  "version": "0.1.2",
-  "description": "An implementation of Lox in TypeScript",
+  "name": "lox-typescript",
+  "version": "1.0.0",
+  "description": "A typescript implementation of the lox interpreter from craftinginterpreters.com",
   "main": "./dist/index.js",
   "scripts": {
-    "start": "tsc && node ./dist/index.js"
+    "build": "tsc",
+    "start": "npm run build && node ./dist/index.js"
   },
-  "author": "Oscar (zorbyte)",
+  "author": "Ben Cohen (kaizerroll)",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^12.6.9",
-    "typescript": "^3.5.3"
+    "prettier": "2.0.4",
+    "typescript": "^3.8.3",
+    "@types/node": "13.11.0"
   }
 }
