@@ -14,6 +14,7 @@ var Lox = /** @class */ (function () {
         var args = process_1.argv.slice(2);
         if (args.length > 1) {
             console.log('Usage: tlox [script]');
+            process_1.exit(64);
         }
         else if (args.length === 1) {
             Lox.runFile(args[0]);
@@ -25,6 +26,8 @@ var Lox = /** @class */ (function () {
     Lox.runFile = function (path) {
         var fileContents = fs_1.readFileSync(path, 'utf8');
         Lox.run(fileContents);
+        if (Lox.hadError)
+            process_1.exit(65);
     };
     Lox.runPrompt = function () {
         var rl = readline_1.default.createInterface({
@@ -36,11 +39,11 @@ var Lox = /** @class */ (function () {
         rl.prompt();
         rl.on('line', function (line) {
             Lox.run(line);
+            Lox.hadError = false;
             rl.prompt();
         });
     };
     Lox.run = function (source) {
-        console.log('running Lox on input:', source);
         var scanner = new Scanner_1.default(source);
         var tokens = scanner.scanTokens();
         for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
@@ -48,6 +51,14 @@ var Lox = /** @class */ (function () {
             console.log(token);
         }
     };
+    Lox.error = function (line, message) {
+        Lox.report(line, '', message);
+    };
+    Lox.report = function (line, where, message) {
+        console.error("[line " + line + "] Error " + where + ": " + message);
+        Lox.hadError = true;
+    };
+    Lox.hadError = false;
     return Lox;
 }());
 exports.default = Lox;
