@@ -5,8 +5,8 @@ This is an implementation of the Lox language (from [Crafting Interpreters](craf
 ## Setup
 
 ```sh
-npm install # install dependencies
-npm link # create the 'tlox' cli
+npm install            # install dependencies
+npm link               # create the 'tlox' cli
 chmod +x dist/index.js # make main file executable
-npm start # build and run the cli
+npm start              # build and run the cli
 ```
