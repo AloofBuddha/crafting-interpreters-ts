@@ -62,15 +62,39 @@ export default class Scanner {
       case '*':
         this.addToken(TokenType.STAR);
         break;
-
+      case '!':
+        this.addToken(this.match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
+        break;
+      case '=':
+        this.addToken(
+          this.match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL
+        );
+        break;
+      case '<':
+        this.addToken(this.match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
+        break;
+      case '>':
+        this.addToken(
+          this.match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER
+        );
+        break;
       default:
-        Lox.error(this.line, 'Unexpected character.');
+        Lox.error(this.line, `Unexpected character: '${char}'`);
     }
   }
 
-  private advance() {
+  private advance(): string {
     this.current++;
     return this.source.charAt(this.current - 1);
+  }
+
+  // conditional advance
+  private match(expected: string): boolean {
+    if (this.isAtEnd) return false;
+    if (this.source.charAt(this.current) != expected) return false;
+
+    this.current++;
+    return true;
   }
 
   private addToken(type: TokenType, literal: object | null = null) {
