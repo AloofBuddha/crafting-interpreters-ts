@@ -49,7 +49,7 @@ export default class Lox {
     const tokens = scanner.scanTokens();
 
     for (const token of tokens) {
-      console.log(token);
+      console.log(token.toString());
     }
   }
 
