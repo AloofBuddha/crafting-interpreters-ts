@@ -1,1 +1,7 @@
-!!=><=
+// this is a comment
+(( )){} // grouping stuff
+!*+-/=<> <= == // operators
+"hello world" // a string literal
+12 // an int
+12.23 // a float
+anIdentifier123 // why don't we capture the string?
