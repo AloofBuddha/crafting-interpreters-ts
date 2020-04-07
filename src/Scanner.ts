@@ -1,5 +1,5 @@
 import Token, { TokenType } from './Token';
-import Lox from './Lox';
+import { error } from './Lox';
 
 export default class Scanner {
   private source: string;
@@ -79,7 +79,7 @@ export default class Scanner {
         );
         break;
       default:
-        Lox.error(this.line, `Unexpected character: '${char}'`);
+        error(this.line, `Unexpected character: '${char}'`);
     }
   }
 
