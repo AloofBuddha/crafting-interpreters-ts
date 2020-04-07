@@ -1,5 +1,6 @@
 import Token from './Token';
 import TokenType from './TokenType';
+import ReservedWords from './ReservedWords';
 import { error } from './Lox';
 import { isDigit, isAlpha, isAlphaNumeric } from './helpers';
 
@@ -32,64 +33,54 @@ export default class Scanner {
 
     switch (char) {
       case '(':
-        this.addToken(TokenType.LEFT_PAREN);
-        break;
+        return this.addToken(TokenType.LEFT_PAREN);
 
       case ')':
-        this.addToken(TokenType.RIGHT_PAREN);
-        break;
+        return this.addToken(TokenType.RIGHT_PAREN);
 
       case '{':
-        this.addToken(TokenType.LEFT_BRACE);
-        break;
+        return this.addToken(TokenType.LEFT_BRACE);
 
       case '}':
-        this.addToken(TokenType.RIGHT_BRACE);
-        break;
+        return this.addToken(TokenType.RIGHT_BRACE);
 
       case ',':
-        this.addToken(TokenType.COMMA);
-        break;
+        return this.addToken(TokenType.COMMA);
 
       case '.':
-        this.addToken(TokenType.DOT);
-        break;
+        return this.addToken(TokenType.DOT);
 
       case '-':
-        this.addToken(TokenType.MINUS);
-        break;
+        return this.addToken(TokenType.MINUS);
 
       case '+':
-        this.addToken(TokenType.PLUS);
-        break;
+        return this.addToken(TokenType.PLUS);
 
       case ';':
-        this.addToken(TokenType.SEMICOLON);
-        break;
+        return this.addToken(TokenType.SEMICOLON);
 
       case '*':
-        this.addToken(TokenType.STAR);
-        break;
+        return this.addToken(TokenType.STAR);
 
       case '!':
-        this.addToken(this.match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
-        break;
+        return this.addToken(
+          this.match('=') ? TokenType.BANG_EQUAL : TokenType.BANG
+        );
 
       case '=':
-        this.addToken(
+        return this.addToken(
           this.match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL
         );
-        break;
 
       case '<':
-        this.addToken(this.match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
-        break;
+        return this.addToken(
+          this.match('=') ? TokenType.LESS_EQUAL : TokenType.LESS
+        );
 
       case '>':
-        this.addToken(
+        return this.addToken(
           this.match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER
         );
-        break;
 
       case '/':
         if (this.match('/')) {
@@ -109,20 +100,18 @@ export default class Scanner {
         break;
 
       case '\n':
-        this.line++;
-        break;
+        return this.line++;
 
       case '"':
-        this.string();
-        break;
+        return this.string();
 
       default:
         if (isDigit(char)) {
-          this.number();
+          return this.number();
         } else if (isAlpha(char)) {
-          this.identifier();
+          return this.identifier();
         } else {
-          error(this.line, `Unexpected character: '${char}'`);
+          return error(this.line, `Unexpected character: '${char}'`);
         }
     }
   }
@@ -198,6 +187,9 @@ export default class Scanner {
   private identifier() {
     while (isAlphaNumeric(this.peek())) this.advance();
 
-    this.addToken(TokenType.IDENTIFIER);
+    // see if the identifier is a reserved word
+    const text = this.source.substring(this.start, this.current);
+    const type = ReservedWords[text] || TokenType.IDENTIFIER;
+    this.addToken(type);
   }
 }
